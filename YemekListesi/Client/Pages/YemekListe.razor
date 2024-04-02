@@ -1,0 +1,30 @@
+﻿@page "/yemekliste"
+@inject HttpClient Http
+@using YemekListesi.Shared
+
+<h3>Yemek Listesi</h3>
+
+@if(yemeks.Count <= 0)
+{
+    <span>Yükleniyor</span>
+}
+else
+{
+    <ul>
+@foreach (var yemek in yemeks)
+{
+    <li>@yemek.Name - @yemek.Date</li>
+}
+</ul>
+}
+
+@code {
+    List<Yemek> yemeks = new List<Yemek>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Http.GetFromJsonAsync < List<Yemek>>("api/yemeklist");
+        if (result != null)
+            yemeks = result;
+    }
+}
