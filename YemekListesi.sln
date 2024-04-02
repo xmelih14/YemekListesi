@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YemekListesi.Server", "YemekListesi\Server\YemekListesi.Server.csproj", "{3DFCB6DD-7BBE-4982-A737-B76E63843E0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YemekListesi.Server", "YemekListesi\Server\YemekListesi.Server.csproj", "{3DFCB6DD-7BBE-4982-A737-B76E63843E0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YemekListesi.Client", "YemekListesi\Client\YemekListesi.Client.csproj", "{51DDAF09-58C8-4BF2-A723-40CF14AEC0F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YemekListesi.Client", "YemekListesi\Client\YemekListesi.Client.csproj", "{51DDAF09-58C8-4BF2-A723-40CF14AEC0F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YemekListesi.Shared", "YemekListesi\Shared\YemekListesi.Shared.csproj", "{A1A0543A-4C4E-4C0B-B62D-268F55AE5BEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YemekListesi.Shared", "YemekListesi\Shared\YemekListesi.Shared.csproj", "{A1A0543A-4C4E-4C0B-B62D-268F55AE5BEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
