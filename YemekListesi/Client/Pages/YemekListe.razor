@@ -1,21 +1,49 @@
 ﻿@page "/yemekliste"
 @inject HttpClient Http
 @using YemekListesi.Shared
+@using System.Linq
 
+<link rel="stylesheet" href="css/styles.css" />
 <h3>Yemek Listesi</h3>
 
-@if(yemeks.Count <= 0)
+
+@if (yemeks.Count <= 0)
 {
     <span>Yükleniyor</span>
 }
 else
 {
-    <ul>
-@foreach (var yemek in yemeks)
-{
-    <li>@yemek.Name - @yemek.Date</li>
-}
-</ul>
+    <div style="display: flex; flex-wrap: wrap;">
+    <img src="mercimek-çorbası.jpg" alt="Mercimek Çorbası" style="width: 230px; height: 160px; position: center; top: 0; left: 0; padding: 20px" />
+        <img src="tavuk-pilav.jpg" alt="Tavuk Pilav" style="width: 230px; height: 160px; position: center; top: 0; left: 0; padding: 20px" />
+        <img src="tekirdag-koftesi.jpg" alt="Tekirdağ Köftesi" style="width: 230px; height: 160px; position: center; top: 0; left: 0; padding: 20px" />
+        <img src="cacık.jpg" alt="Cacık" style="width: 230px; height: 160px; position: center; top: 0; left: 0; padding: 20px" />
+        <img src="baklava.jpeg" alt="Baklava" style="width: 230px; height: 160px; position: center; top: 0; left: 0; padding: 20px" />
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tarih</th>
+                <th>Yemekler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var group in yemeks.GroupBy(y => y.Date))
+            {
+                <tr>
+                    <td><span class="date">@group.Key</span></td>
+                    <td>
+                        <ul class="list-unstyled">
+                            @foreach (var yemek in group)
+                            {
+                                <li class="yemek-isimleri">@yemek.Name</li>
+                            }
+                        </ul>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
 @code {
@@ -23,7 +51,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await Http.GetFromJsonAsync < List<Yemek>>("api/yemeklist");
+        var result = await Http.GetFromJsonAsync<List<Yemek>>("api/yemeklist");
         if (result != null)
             yemeks = result;
     }
