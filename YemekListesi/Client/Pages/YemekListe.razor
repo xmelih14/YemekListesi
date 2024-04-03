@@ -1,58 +1,60 @@
-﻿@page "/yemekliste"
-@inject HttpClient Http
-@using YemekListesi.Shared
-@using System.Linq
+﻿@page "/"
 
-<link rel="stylesheet" href="css/styles.css" />
-<h3>Yemek Listesi</h3>
+<h3>Haftalık Yemek Listesi</h3>
 
-
-@if (yemeks.Count <= 0)
-{
-    <span>Yükleniyor</span>
-}
-else
-{
-    <div style="display: flex; flex-wrap: wrap;">
-    <img src="mercimek-çorbası.jpg" alt="Mercimek Çorbası" style="width: 230px; height: 160px; position: center; top: 0; left: 0; padding: 20px" />
-        <img src="tavuk-pilav.jpg" alt="Tavuk Pilav" style="width: 230px; height: 160px; position: center; top: 0; left: 0; padding: 20px" />
-        <img src="tekirdag-koftesi.jpg" alt="Tekirdağ Köftesi" style="width: 230px; height: 160px; position: center; top: 0; left: 0; padding: 20px" />
-        <img src="cacık.jpg" alt="Cacık" style="width: 230px; height: 160px; position: center; top: 0; left: 0; padding: 20px" />
-        <img src="baklava.jpeg" alt="Baklava" style="width: 230px; height: 160px; position: center; top: 0; left: 0; padding: 20px" />
-    </div>
-    <table class="table">
-        <thead>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Gün</th>
+            <th>Yemekler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var day in Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().Where(d => d != DayOfWeek.Saturday && d != DayOfWeek.Sunday))
+        {
             <tr>
-                <th>Tarih</th>
-                <th>Yemekler</th>
+                <td>@GetTurkishDayName(day)</td>
+                <td>
+                    <ul>
+                        @foreach (var meal in GetMealsForDay(day))
+                        {
+                            <li>@meal</li>
+                        }
+                    </ul>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var group in yemeks.GroupBy(y => y.Date))
-            {
-                <tr>
-                    <td><span class="date">@group.Key</span></td>
-                    <td>
-                        <ul class="list-unstyled">
-                            @foreach (var yemek in group)
-                            {
-                                <li class="yemek-isimleri">@yemek.Name</li>
-                            }
-                        </ul>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+        }
+    </tbody>
+</table>
 
 @code {
-    List<Yemek> yemeks = new List<Yemek>();
-
-    protected override async Task OnInitializedAsync()
+    // Örnek veri: Haftalık yemek listesi
+    Dictionary<DayOfWeek, List<string>> weeklyMeals = new Dictionary<DayOfWeek, List<string>>
     {
-        var result = await Http.GetFromJsonAsync<List<Yemek>>("api/yemeklist");
-        if (result != null)
-            yemeks = result;
+        { DayOfWeek.Monday, new List<string> { "Köfte", "Pilav", "Yoğurt" } },
+        { DayOfWeek.Tuesday, new List<string> { "Tavuk Sote", "Bulgur Pilavı", "Çorba" } },
+        { DayOfWeek.Wednesday, new List<string> { "Izgara Balık", "Patates Püresi", "Salata" } },
+        { DayOfWeek.Thursday, new List<string> { "Mantı", "Yoğurt", "Salata" } },
+        { DayOfWeek.Friday, new List<string> { "Pizza", "Makarna", "Salata" } }
+    };
+
+    // Verilen gün için yemek listesini al
+    List<string> GetMealsForDay(DayOfWeek day)
+    {
+        return weeklyMeals.ContainsKey(day) ? weeklyMeals[day] : new List<string>();
+    }
+
+    // Gün isimlerini Türkçe olarak döndür
+    string GetTurkishDayName(DayOfWeek day)
+    {
+        switch (day)
+        {
+            case DayOfWeek.Monday: return "Pazartesi";
+            case DayOfWeek.Tuesday: return "Salı";
+            case DayOfWeek.Wednesday: return "Çarşamba";
+            case DayOfWeek.Thursday: return "Perşembe";
+            case DayOfWeek.Friday: return "Cuma";
+            default: return "";
+        }
     }
 }
